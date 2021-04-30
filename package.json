@@ -9,6 +9,7 @@
   "author": "Juan Pablo Vallejo",
   "license": "ISC",
   "dependencies": {
+    "@adiwajshing/baileys": "^3.5.0",
     "baileys": "^1.1.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
