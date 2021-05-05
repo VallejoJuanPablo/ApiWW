@@ -13,6 +13,10 @@ const {
 // CONECTA WHATS - SERVIDOR
 module.exports.conectApi = async (req, res) => {
     client.connect()
+    client.on('qr', (QR) => {
+        res.jsonp({qr: QR});
+        console.log(QR) 
+    })
     .then (([user, chats, contacts, unread]) => {
         res.jsonp({mensaje: 'Autenticación exitosa'});
     })
