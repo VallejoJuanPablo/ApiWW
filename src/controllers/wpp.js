@@ -3,7 +3,7 @@ const WhatsAppWeb = require('baileys')
 
 const client = new WhatsAppWeb() 
  */
-
+const fs = require('fs');
 const {
     WAConnection,MessageType
     } = require('@adiwajshing/baileys')
@@ -12,10 +12,17 @@ const {
 
 // CONECTA WHATS - SERVIDOR
 module.exports.conectApi = async (req, res) => {
+   
     client.connect()
     client.on('qr', (QR) => {
         res.jsonp({qr: QR});
         console.log(QR) 
+    })
+    client.on ('open', () => {
+        // save credentials whenever updated
+        console.log (`credentials updated!`)
+        const authInfo = client.base64EncodedAuthInfo() // get all the auth info we need to restore this session
+        fs.writeFileSync('./auth_info.json', JSON.stringify(authInfo, null, '\t')) // save this info to a file
     })
     .then (([user, chats, contacts, unread]) => {
         res.jsonp({mensaje: 'Autenticación exitosa'});
@@ -23,6 +30,11 @@ module.exports.conectApi = async (req, res) => {
     .catch (err => console.log(err) )
 }
 
+// CONECTA WHATS - SERVIDOR
+module.exports.status = async (req, res) => {
+    const resp = await client.getStatus()
+        res.jsonp(resp); 
+}
 
 // ENVIAR MENSAJES
 
@@ -40,4 +52,9 @@ const sentMsg  =  await client.sendMessage(`${req.body.phone}@s.whatsapp.net`, r
 
 }
 
+module.exports.reConectar = async () => {
+    
+    client.loadAuthInfo ('./auth_info.json') // will load JSON credentials from file
+    await client.connect() 
+}
 
