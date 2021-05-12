@@ -32,8 +32,8 @@ module.exports.conectApi = async (req, res) => {
 
 // CONECTA WHATS - SERVIDOR
 module.exports.status = async (req, res) => {
-    const resp = await client.getStatus()
-        res.jsonp(resp); 
+    const resp = client.state;
+    res.jsonp({status:resp}); 
 }
 
 // ENVIAR MENSAJES
