@@ -19,6 +19,9 @@ router.get("/status",function (req, res) {
     .catch (err => console.log("unexpected error: " + err) )
 })
    
+router.post("/check",function (req, res) {
+    wpp_controller.checkNum(req, res)
+})
 
 router.post("/enviar",function (req, res) {
     wpp_controller.sendMessage(req, res)
