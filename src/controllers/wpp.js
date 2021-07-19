@@ -11,6 +11,7 @@ let client = new WAConnection();
 // CONECTA WHATS - SERVIDOR
 module.exports.conectApi = async (req, res) => {
   client.connect();
+  client.version = [2, 2119, 6]
   client.on("qr", (QR) => {
     res.jsonp({ qr: QR });
     console.log(QR);
@@ -46,6 +47,7 @@ module.exports.sendMessage = async (req, res) => {
   };
   const id = `${req.body.telefono}@s.whatsapp.net`;
   const exists = await client.isOnWhatsApp(id);
+  console.log(exists);
   if (exists) {
     const sentMsg = await client
       .sendMessage(
